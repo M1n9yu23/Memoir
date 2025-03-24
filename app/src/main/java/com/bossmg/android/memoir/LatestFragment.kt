@@ -12,14 +12,13 @@ import com.bossmg.android.memoir.databinding.ItemMemoBinding
 
 class LatestFragment : Fragment() {
 
-    private lateinit var datas: List<MemoItem>
+    private lateinit var memos: List<MemoItem>
+    private lateinit var memoAdapter: MemoAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        datas = List(10) {
-            MemoItem("Title $it", "Description $it", "$it","2025-03-${it + 1}")
-        }
+        memos = MyApplication.db.getAllMemos()
     }
 
     override fun onCreateView(
@@ -29,18 +28,25 @@ class LatestFragment : Fragment() {
     ): View? {
         val binding = FragmentLatestBinding.inflate(inflater, container, false)
 
+        memoAdapter = MemoAdapter(memos)
         binding.latestRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.latestRecyclerView.adapter = MemoAdapter(datas)
+        binding.latestRecyclerView.adapter = memoAdapter
 
         return binding.root
     }
 
-    private inner class MemoViewHolder(val binding: ItemMemoBinding): RecyclerView.ViewHolder(binding.root)
+    private inner class MemoViewHolder(val binding: ItemMemoBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
-    private inner class MemoAdapter(private val memoList: List<MemoItem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+    private inner class MemoAdapter(private var memoList: List<MemoItem>) :
+        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = MemoViewHolder(ItemMemoBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false))
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+            MemoViewHolder(
+                ItemMemoBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false
+                )
+            )
 
         override fun getItemCount(): Int = memoList.size
 
@@ -50,8 +56,25 @@ class LatestFragment : Fragment() {
             val memo = memoList[position]
 
             binding.memoTitle.text = memo.title
-            binding.memoDateNumber.text = memo.dateDateNumber
+            binding.memoDateNumber.text = memo.dateNumber
             binding.memoDate.text = memo.date
+            binding.memoDay.text = memo.dayOfWeek
+            binding.memoMainImage.setImageBitmap(memo.image)
+        }
+
+        fun updateMemos(newMemoList: List<MemoItem>) {
+            memoList = newMemoList
+            notifyDataSetChanged()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // db 갱신
+        val updateMemos = MyApplication.db.getAllMemos()
+        if (updateMemos != memos) {
+            memos = updateMemos
+            memoAdapter.updateMemos(memos)
         }
     }
 }
