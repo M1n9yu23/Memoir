@@ -7,27 +7,27 @@
     android:layout_width="match_parent">
 
     <TextView
-        android:id="@+id/memoDate"
+        android:id="@+id/memo_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:text="2025년 3월 23일 일요일"
-        app:layout_constraintBottom_toTopOf="@id/memoDateNumber"
-        app:layout_constraintStart_toEndOf="@id/memoDateNumber"
-        app:layout_constraintTop_toTopOf="@id/memoDateNumber" />
+        tools:text="2025년 3월 23일 일요일"
+        app:layout_constraintBottom_toTopOf="@id/memo_date_number"
+        app:layout_constraintStart_toEndOf="@id/memo_date_number"
+        app:layout_constraintTop_toTopOf="@id/memo_date_number" />
 
     <TextView
-        android:id="@+id/memoTitle"
+        android:id="@+id/memo_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:text="나의 사랑스러운 가족들"
+        tools:text="나의 사랑스러운 가족들"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/memoDate" />
+        app:layout_constraintStart_toStartOf="@+id/memo_date" />
 
     <ImageView
-        android:id="@+id/memoMainImage"
+        android:id="@+id/memo_main_image"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginEnd="30dp"
@@ -37,7 +37,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/memoDateNumber"
+        android:id="@+id/memo_date_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -49,13 +49,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/memoDay"
+        android:id="@+id/memo_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="목"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@id/memoDateNumber"
-        app:layout_constraintStart_toStartOf="@id/memoDateNumber"
-        app:layout_constraintTop_toBottomOf="@id/memoDateNumber" />
+        app:layout_constraintEnd_toEndOf="@id/memo_date_number"
+        app:layout_constraintStart_toStartOf="@id/memo_date_number"
+        app:layout_constraintTop_toBottomOf="@id/memo_date_number" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
