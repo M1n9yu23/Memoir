@@ -38,6 +38,7 @@ class MemoDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         Log.d(TAG, "Upgrade Database $p1 -> $p2")
     }
 
+    // 메모 추가
     fun insertMemo(memo: MemoItem) {
         val db = writableDatabase
         val values = ContentValues().apply {
@@ -50,7 +51,7 @@ class MemoDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         db.close()
     }
 
-    // 모든 메모를 가져오는 메소드
+    // 모든 메모를 가져오는 함수
     fun getAllMemos(): List<MemoItem> {
         val db = readableDatabase
         val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME", null)
@@ -69,7 +70,7 @@ class MemoDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         return memoList
     }
 
-    // 특정 날짜에 해당하는 메모를 가져오는 메소드
+    // 특정 날짜에 해당하는 메모를 가져오는 함수
     fun getMemosByDate(date: String): List<MemoItem> {
         val db = readableDatabase
         val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME WHERE $COLUMN_DATE = ?", arrayOf(date))
@@ -79,7 +80,6 @@ class MemoDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
             val title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE))
             val description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPTION))
             val image = cursor.getBlob(cursor.getColumnIndexOrThrow(COLUMN_IMAGE))
-            // 메모 아이템 생성 후 리스트에 추가
             memoList.add(MemoItem(title, description, date, BitmapFactory.decodeByteArray(image, 0, image.size)))
         }
 
