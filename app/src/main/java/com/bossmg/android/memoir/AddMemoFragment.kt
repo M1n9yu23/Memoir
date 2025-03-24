@@ -31,13 +31,13 @@ import java.util.Locale
 class AddMemoFragment : Fragment() {
 
     private lateinit var binding: FragmentAddMemoBinding
-    private var imageUri: Uri? = null
+    private var imageUri: Uri? = null // 카메라 Uri
     private val pickCameraLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
         if (it.resultCode == Activity.RESULT_OK) {
-            val bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, imageUri)
-            binding.memoImage.setImageBitmap(bitmap) // ImageView에 표시
+            val bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, imageUri) // URI -> Bitmap 변환
+            binding.memoImage.setImageBitmap(bitmap)
         }
     }
     private val pickGalleryLauncher = registerForActivityResult(
@@ -50,14 +50,12 @@ class AddMemoFragment : Fragment() {
         }
     }
     private val pickContactLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                result.data?.data?.let { contactUri ->
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                it.data?.data?.let { contactUri ->
                     val phoneNumber = getPhoneNumber(contactUri)
                     if (phoneNumber != null) {
                         shareMemo(phoneNumber)
-                    } else {
-                        Toast.makeText(requireContext(), "전화번호를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -136,7 +134,7 @@ class AddMemoFragment : Fragment() {
         return binding.root
     }
 
-    // 선택한 연락처에서 전화번호를 가져오는 함수
+    // 선택한 연락처에서 전화번호를 가져옴
     private fun getPhoneNumber(contactUri: Uri): String? {
         var phoneNumber: String? = null
         val cursor: Cursor? = requireActivity().contentResolver.query(
@@ -163,23 +161,25 @@ class AddMemoFragment : Fragment() {
         val memoText = "📅 날짜: $date\n📌 제목: $title\n📝 내용: $description"
 
         val smsIntent = Intent(Intent.ACTION_SENDTO).apply {
-            data = Uri.parse("smsto:$phoneNumber") // 전화번호 설정
-            putExtra("sms_body", memoText) // 메시지 내용 설정
+            data = Uri.parse("sms to:$phoneNumber") // 전화번호 설정
+            putExtra("sms_body", memoText) // 메시지 내용 전달
         }
         startActivity(smsIntent)
     }
 
+    // 카메라 열기
     private fun openCamera(){
         val file = File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
             "memo_${System.currentTimeMillis()}.jpg")
         imageUri = FileProvider.getUriForFile(requireContext(), "com.bossmg.android.memoir.fileprovider", file)
 
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-            putExtra(MediaStore.EXTRA_OUTPUT, imageUri) // 사진을 저장할 위치 지정
+            putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
         }
         pickCameraLauncher.launch(intent)
     }
 
+    // 갤러리 열기
     private fun openGallery(){
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         pickGalleryLauncher.launch(intent)

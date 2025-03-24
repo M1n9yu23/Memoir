@@ -2,8 +2,6 @@ package com.bossmg.android.memoir
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.bossmg.android.memoir.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
