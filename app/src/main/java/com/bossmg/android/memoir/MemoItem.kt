@@ -40,9 +40,4 @@ data class MemoItem(
         image?.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
         return outputStream.toByteArray()
     }
-
-    fun getBitmapFromByteArray(byteArray: ByteArray): Bitmap {
-        val inputStream = ByteArrayInputStream(byteArray)
-        return BitmapFactory.decodeStream(inputStream)
-    }
 }
