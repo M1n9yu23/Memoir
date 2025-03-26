@@ -16,6 +16,7 @@ private const val COLUMN_ID = "_id"
 private const val COLUMN_TITLE = "title"
 private const val COLUMN_DESCRIPTION = "description"
 private const val COLUMN_DATE = "date"
+private const val COLUMN_MOOD = "mood"
 private const val COLUMN_IMAGE = "image"
 private const val TAG = "MemoDBHelper"
 
@@ -27,6 +28,7 @@ class MemoDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
                 $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
                 $COLUMN_TITLE TEXT NOT NULL,
                 $COLUMN_DESCRIPTION TEXT,
+                $COLUMN_MOOD TEXT,
                 $COLUMN_DATE TEXT NOT NULL,
                 $COLUMN_IMAGE BLOB
             )
@@ -44,11 +46,53 @@ class MemoDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         val values = ContentValues().apply {
             put(COLUMN_TITLE, memo.title)
             put(COLUMN_DESCRIPTION, memo.description)
+            put(COLUMN_MOOD, memo.mood)
             put(COLUMN_DATE, memo.date)
             put(COLUMN_IMAGE, memo.getImageByteArray())
         }
         db.insert(TABLE_NAME, null, values)
         db.close()
+    }
+
+    fun updateMemo(id: Int, memo: MemoItem) {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_TITLE, memo.title)
+            put(COLUMN_DESCRIPTION, memo.description)
+            put(COLUMN_MOOD, memo.mood)
+            put(COLUMN_DATE, memo.date)
+            put(COLUMN_IMAGE, memo.getImageByteArray())
+        }
+        db.update(TABLE_NAME, values, "$COLUMN_ID = ?", arrayOf(id.toString()))
+        db.close()
+    }
+
+    fun deleteMemo(id: Int) {
+        val db = writableDatabase
+        db.delete(TABLE_NAME, "$COLUMN_ID = ?", arrayOf(id.toString()))
+        db.close()
+    }
+
+    // 해당 id 메모를 가져오는 함수
+    fun getMemo(id: Int): MemoItem {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME WHERE $COLUMN_ID = ?", arrayOf(id.toString()))
+        var memoItem : MemoItem? = null
+
+        if(cursor.moveToFirst()) {
+            val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
+            val title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE))
+            val description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPTION))
+            val mood = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_MOOD))
+            val date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE))
+            val image = cursor.getBlob(cursor.getColumnIndexOrThrow(COLUMN_IMAGE))
+
+            memoItem = MemoItem(id, title, description, date, mood, BitmapFactory.decodeByteArray(image, 0, image.size))
+        }
+
+        cursor.close()
+        db.close()
+        return memoItem!!
     }
 
     // 모든 메모를 가져오는 함수
@@ -58,11 +102,13 @@ class MemoDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         val memoList = mutableListOf<MemoItem>()
 
         while (cursor.moveToNext()) {
+            val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
             val title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE))
             val description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPTION))
+            val mood = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_MOOD))
             val date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE))
             val image = cursor.getBlob(cursor.getColumnIndexOrThrow(COLUMN_IMAGE))
-            memoList.add(MemoItem(title, description, date, BitmapFactory.decodeByteArray(image, 0, image.size)))
+            memoList.add(MemoItem(id, title, description, date, mood , BitmapFactory.decodeByteArray(image, 0, image.size)))
         }
 
         cursor.close()
@@ -77,10 +123,12 @@ class MemoDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, 
         val memoList = mutableListOf<MemoItem>()
 
         while (cursor.moveToNext()) {
+            val id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID))
             val title = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITLE))
             val description = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPTION))
+            val mood = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_MOOD))
             val image = cursor.getBlob(cursor.getColumnIndexOrThrow(COLUMN_IMAGE))
-            memoList.add(MemoItem(title, description, date, BitmapFactory.decodeByteArray(image, 0, image.size)))
+            memoList.add(MemoItem(id, title, description, date, mood ,BitmapFactory.decodeByteArray(image, 0, image.size)))
         }
 
         cursor.close()
