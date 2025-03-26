@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_cardview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="10dp"
-    app:cardPreventCornerOverlap="true"
+    android:layout_margin="10dp"
     android:clickable="true"
     android:focusable="true"
+    app:cardCornerRadius="20dp"
+    app:cardPreventCornerOverlap="true"
     app:pressedTranslationZ="30dp"
-    android:layout_marginBottom="10dp">
+    tools:cardBackgroundColor="@color/mood_neutral_bg"
+    tools:strokeColor="@color/mood_neutral_stroke">
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/memo_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            tools:text="2025년 3월 23일 일요일"
             app:layout_constraintBottom_toTopOf="@id/memo_date_number"
             app:layout_constraintStart_toEndOf="@id/memo_date_number"
-            app:layout_constraintTop_toTopOf="@id/memo_date_number" />
+            app:layout_constraintTop_toTopOf="@id/memo_date_number"
+            tools:text="2025년 3월 23일 일요일" />
 
         <TextView
             android:id="@+id/memo_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="30dp"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/memo_date"
@@ -38,10 +41,10 @@
 
         <ImageView
             android:id="@+id/memo_main_image"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="10dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
@@ -63,12 +66,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:textSize="18sp"
+            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/memo_date_number"
             app:layout_constraintStart_toStartOf="@id/memo_date_number"
             app:layout_constraintTop_toBottomOf="@id/memo_date_number"
             tools:text="목" />
+
+        <TextView
+            android:id="@+id/mood_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/memo_title"
+            app:layout_constraintTop_toBottomOf="@+id/memo_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
