@@ -1,6 +1,5 @@
-package com.bossmg.android.memoir
+package com.bossmg.android.memoir.decorator
 
-import android.text.style.ForegroundColorSpan
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade

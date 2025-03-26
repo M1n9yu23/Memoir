@@ -1,4 +1,4 @@
-package com.bossmg.android.memoir
+package com.bossmg.android.memoir.ui.detail
 
 import android.app.Activity
 import android.app.DatePickerDialog
@@ -6,7 +6,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.database.Cursor
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.graphics.drawable.BitmapDrawable
 import android.icu.util.Calendar
@@ -24,8 +23,10 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
+import com.bossmg.android.memoir.data.model.MemoItem
+import com.bossmg.android.memoir.MyApplication
+import com.bossmg.android.memoir.R
 import com.bossmg.android.memoir.databinding.FragmentAddMemoBinding
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
