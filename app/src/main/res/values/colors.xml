@@ -2,4 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="mood_positive_bg">#BDE9FF</color>
+    <color name="mood_positive_stroke">#93DEFB</color>
+    <color name="mood_neutral_bg">#B8FFB8</color>
+    <color name="mood_neutral_stroke">#C1E1C1</color>
+    <color name="mood_negative_bg">#FF8A80</color>
+    <color name="mood_negative_stroke">#FF9F9F</color>
 </resources>
