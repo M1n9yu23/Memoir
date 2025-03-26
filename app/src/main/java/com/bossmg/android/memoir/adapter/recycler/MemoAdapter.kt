@@ -1,9 +1,11 @@
-package com.bossmg.android.memoir
+package com.bossmg.android.memoir.adapter.recycler
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bossmg.android.memoir.data.model.MemoItem
+import com.bossmg.android.memoir.R
 import com.bossmg.android.memoir.databinding.ItemMemoBinding
 import java.text.SimpleDateFormat
 import java.util.Locale

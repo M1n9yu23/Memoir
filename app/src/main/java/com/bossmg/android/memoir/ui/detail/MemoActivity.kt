@@ -1,11 +1,8 @@
-package com.bossmg.android.memoir
+package com.bossmg.android.memoir.ui.detail
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.bossmg.android.memoir.databinding.ActivityMainBinding
+import com.bossmg.android.memoir.R
 import com.bossmg.android.memoir.databinding.ActivityMemoBinding
 
 class MemoActivity : AppCompatActivity() {

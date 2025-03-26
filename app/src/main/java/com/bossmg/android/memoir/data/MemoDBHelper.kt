@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.graphics.BitmapFactory
 import android.util.Log
-import com.bossmg.android.memoir.MemoItem
+import com.bossmg.android.memoir.data.model.MemoItem
 
 
 private const val DATABASE_NAME = "memoDB"

@@ -1,10 +1,16 @@
-package com.bossmg.android.memoir
+package com.bossmg.android.memoir.ui.main
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.bossmg.android.memoir.adapter.viewpager.FragmentViewPagerAdapter
+import com.bossmg.android.memoir.adapter.recycler.MemoAdapter
+import com.bossmg.android.memoir.data.model.MemoItem
+import com.bossmg.android.memoir.MyApplication
+import com.bossmg.android.memoir.R
 import com.bossmg.android.memoir.databinding.ActivityMainBinding
+import com.bossmg.android.memoir.ui.detail.MemoActivity
 import com.google.android.material.tabs.TabLayoutMediator
 
 private const val TAG = "MainActivity"
