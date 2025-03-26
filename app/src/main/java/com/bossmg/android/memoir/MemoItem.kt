@@ -11,9 +11,11 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 data class MemoItem(
+    val id: Int,
     val title: String,
     val description: String?,
     val date: String,
+    val mood: String = "\uD83D\uDE0A 기쁨",
     val image: Bitmap?
 ) {
     val dateNumber: String
