@@ -2,15 +2,18 @@ package com.bossmg.android.memoir
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bossmg.android.memoir.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
-class MainActivity : AppCompatActivity() {
+private const val TAG = "MainActivity"
+
+class MainActivity : AppCompatActivity(), MemoAdapter.MemoItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        Log.d(TAG, "onCreate...")
         val binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
@@ -31,5 +34,22 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, MemoActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    companion object {
+        var memos = MyApplication.db.getAllMemos()
+        var updateMemos: List<MemoItem> = emptyList()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume...")
+        updateMemos = MyApplication.db.getAllMemos()
+    }
+
+    override fun onMemoItemClick(memoId: Int) {
+        val intent = Intent(this, MemoActivity::class.java)
+        intent.putExtra("memoId", memoId)
+        startActivity(intent)
     }
 }
