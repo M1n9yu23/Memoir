@@ -16,9 +16,12 @@ class MemoActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
+        val memoId = intent.getIntExtra("memoId", -1)
+
         if(savedInstanceState == null) {
+            val fragment = AddMemoFragment.newInstance(memoId)
             supportFragmentManager.beginTransaction()
-                .add(R.id.memo_activity_container, AddMemoFragment())
+                .add(R.id.memo_activity_container, fragment)
                 .commit()
         }
     }
