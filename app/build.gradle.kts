@@ -39,6 +39,7 @@ android {
 
 dependencies {
 
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("com.github.prolificinteractive:material-calendarview:2.0.1")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
