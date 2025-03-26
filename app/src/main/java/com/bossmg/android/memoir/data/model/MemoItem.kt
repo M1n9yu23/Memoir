@@ -1,9 +1,7 @@
-package com.bossmg.android.memoir
+package com.bossmg.android.memoir.data.model
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Build
-import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.time.LocalDate

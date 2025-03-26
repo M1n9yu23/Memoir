@@ -1,19 +1,18 @@
-package com.bossmg.android.memoir
+package com.bossmg.android.memoir.ui.main
 
 import android.os.Bundle
-import android.provider.ContactsContract.Contacts.Photo
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bossmg.android.memoir.MainActivity.Companion.memos
-import com.bossmg.android.memoir.MainActivity.Companion.updateMemos
+import com.bossmg.android.memoir.data.model.MemoItem
 import com.bossmg.android.memoir.databinding.FragmentPhotoBinding
 import com.bossmg.android.memoir.databinding.ItemPhotoBinding
+import com.bossmg.android.memoir.ui.main.MainActivity.Companion.memos
+import com.bossmg.android.memoir.ui.main.MainActivity.Companion.updateMemos
 
 private const val TAG = "PhotoFragment"
 
