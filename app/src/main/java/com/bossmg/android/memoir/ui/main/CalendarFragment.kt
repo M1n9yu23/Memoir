@@ -21,7 +21,7 @@ class CalendarFragment : Fragment() {
 
     private val eventDates = HashSet<CalendarDay>()
     private lateinit var memoAdapter: MemoAdapter
-    private lateinit var binding: FragmentCalendarBinding
+    private var binding: FragmentCalendarBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +36,8 @@ class CalendarFragment : Fragment() {
         binding = FragmentCalendarBinding.inflate(inflater, container, false)
 
         memoAdapter = MemoAdapter(emptyList())
-        binding.calendarRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.calendarRecyclerView.adapter = memoAdapter
+        binding!!.calendarRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding!!.calendarRecyclerView.adapter = memoAdapter
 
         for (memo in memos) {
             val dateParts = memo.date.split("-")
@@ -47,37 +47,46 @@ class CalendarFragment : Fragment() {
         }
 
         // 캘린더뷰에 데코레이터 추가
-        binding.calendarView.addDecorator(EventDecorator(Color.CYAN, eventDates))
+        binding!!.calendarView.addDecorator(EventDecorator(Color.CYAN, eventDates))
 
         // 날짜 클릭 리스너 추가
-        binding.calendarView.setOnDateChangedListener { widget, date, selected ->
+        binding!!.calendarView.setOnDateChangedListener { widget, date, selected ->
             val year = date.year
             val month = date.month
             val day = date.day
 
             // "yyyy-MM-dd" 형식으로 날짜를 생성
-            val formattedDate = "$year-${String.format("%02d", month)}-${String.format("%02d", day)}"
+            val formattedDate =
+                "$year-${String.format("%02d", month)}-${String.format("%02d", day)}"
 
             val memos = MyApplication.db.getMemosByDate(formattedDate)
             memoAdapter.updateMemos(memos)
         }
 
-        return binding.root
+        return binding!!.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        eventDates.clear() // 기존 데이터를 먼저 초기화
+        memos.forEach { memo ->
+            val dateParts = memo.date.split("-").map { it.toInt() }
+            val calendarDay = CalendarDay.from(dateParts[0], dateParts[1], dateParts[2])
+            eventDates.add(calendarDay)
+        }
+        binding!!.calendarView.invalidateDecorators()
+        Log.d(TAG, "onStart...")
+
     }
 
     override fun onResume() {
         super.onResume()
-        if (MyApplication.db.getAllMemos() != memos) {
-            for (memo in memos) {
-                val dateParts = memo.date.split("-")
-                val calendarDay = CalendarDay.from(
-                    dateParts[0].toInt(),
-                    dateParts[1].toInt(),
-                    dateParts[2].toInt()
-                )
-                eventDates.add(calendarDay)
-            }
-            binding.calendarView.invalidateDecorators()
-        }
+        Log.d(TAG, "onResume...")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d(TAG, "onDestroyView...")
     }
 }
