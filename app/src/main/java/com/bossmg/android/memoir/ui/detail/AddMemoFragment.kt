@@ -15,6 +15,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.ContactsContract
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -33,7 +34,7 @@ import java.util.Locale
 
 class AddMemoFragment : Fragment() {
 
-    private lateinit var binding: FragmentAddMemoBinding
+    private  var binding: FragmentAddMemoBinding? = null
     private var imageUri: Uri? = null // 카메라 Uri
 
     private val pickCameraLauncher = registerForActivityResult(
@@ -43,13 +44,13 @@ class AddMemoFragment : Fragment() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 val source = ImageDecoder.createSource(requireContext().contentResolver, imageUri!!)
                 val bitmap = ImageDecoder.decodeBitmap(source)
-                binding.memoImage.setImageBitmap(bitmap)
+                binding!!.memoImage.setImageBitmap(bitmap)
             } else {
                 val bitmap = MediaStore.Images.Media.getBitmap(
                     requireContext().contentResolver,
                     imageUri
                 ) // URI -> Bitmap 변환
-                binding.memoImage.setImageBitmap(bitmap)
+                binding!!.memoImage.setImageBitmap(bitmap)
             }
         }
     }
@@ -61,13 +62,13 @@ class AddMemoFragment : Fragment() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     val source = ImageDecoder.createSource(requireContext().contentResolver, uri)
                     val bitmap = ImageDecoder.decodeBitmap(source)
-                    binding.memoImage.setImageBitmap(bitmap)
+                    binding!!.memoImage.setImageBitmap(bitmap)
                 } else {
                     val bitmap = MediaStore.Images.Media.getBitmap(
                         requireContext().contentResolver,
                         uri
                     ) // URI -> Bitmap 변환
-                    binding.memoImage.setImageBitmap(bitmap)
+                    binding!!.memoImage.setImageBitmap(bitmap)
                 }
             }
         }
@@ -112,9 +113,9 @@ class AddMemoFragment : Fragment() {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN)
         val formattedDate = dateFormat.format(calendar.time)
 
-        binding.textDate.text = formattedDate
+        binding!!.textDate.text = formattedDate
 
-        binding.textDate.setOnClickListener {
+        binding!!.textDate.setOnClickListener {
             // DatePickerDialog
             val datePickerDialog = DatePickerDialog(
                 requireContext(),
@@ -125,7 +126,7 @@ class AddMemoFragment : Fragment() {
 
                     // 날짜 포맷을 지정하고 TextView에 표시
                     val formattedDate = dateFormat.format(selectedDate.time)
-                    binding.textDate.text = formattedDate
+                    binding!!.textDate.text = formattedDate
                 },
                 year,
                 month,
@@ -134,33 +135,14 @@ class AddMemoFragment : Fragment() {
 
             datePickerDialog.show()
         }
-/*
 
-        binding.memoAdd.setOnClickListener {
-            val title = binding.title.text.toString()
-            val description: String? = binding.description.text.toString()
-            val date = binding.textDate.text.toString()
-            val mood = binding.moodSpinner.selectedItem.toString()
-            val image: Bitmap? = (binding.memoImage.drawable as? BitmapDrawable)?.bitmap
-
-            if (title.isNotBlank()) {
-                val memoItem = MemoItem(0, title, description, date, mood, image)
-                MyApplication.db.insertMemo(memoItem)
-                Toast.makeText(requireContext(), "저장되었습니다!", Toast.LENGTH_LONG).show()
-                requireActivity().finish()
-            } else {
-
-            }
-        }
-*/
-
-        binding.memoShare.setOnClickListener {
+        binding!!.memoShare.setOnClickListener {
             val intent =
                 Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
             pickContactLauncher.launch(intent)
         }
 
-        binding.memoCamera.setOnClickListener {
+        binding!!.memoCamera.setOnClickListener {
             AlertDialog.Builder(requireContext()).apply {
                 setTitle("사진 선택")
                 setIcon(android.R.drawable.ic_menu_gallery)
@@ -177,7 +159,7 @@ class AddMemoFragment : Fragment() {
         }
 
 
-        return binding.root
+        return binding!!.root
     }
 
 
@@ -190,24 +172,24 @@ class AddMemoFragment : Fragment() {
         if (memoId != -1) {
             val memo = MyApplication.db.getMemo(memoId)
             memo?.let {
-                binding.title.setText(it.title)
-                binding.description.setText(it.description)
-                binding.textDate.text = it.date
-                binding.moodSpinner.setSelection(moodArray.indexOf(it.mood))
+                binding!!.title.setText(it.title)
+                binding!!.description.setText(it.description)
+                binding!!.textDate.text = it.date
+                binding!!.moodSpinner.setSelection(moodArray.indexOf(it.mood))
                 it.image?.let { bitmap ->
-                    binding.memoImage.setImageBitmap(bitmap)
+                    binding!!.memoImage.setImageBitmap(bitmap)
                 }
-                binding.memoDelete.visibility = View.VISIBLE
+                binding!!.memoDelete.visibility = View.VISIBLE
             }
         } else {
-            binding.memoDelete.visibility = View.GONE
+            binding!!.memoDelete.visibility = View.GONE
         }
 
-        binding.memoAdd.setOnClickListener {
+        binding!!.memoAdd.setOnClickListener {
             saveMemo(memoId)
         }
 
-        binding.memoDelete.setOnClickListener {
+        binding!!.memoDelete.setOnClickListener {
             deleteMemo(memoId)
         }
 
@@ -215,11 +197,11 @@ class AddMemoFragment : Fragment() {
 
     // 저장을 담당하는 함수
     private fun saveMemo(memoId: Int) {
-        val title = binding.title.text.toString()
-        val description = binding.description.text.toString()
-        val date = binding.textDate.text.toString()
-        val mood = binding.moodSpinner.selectedItem.toString()
-        val image: Bitmap? = (binding.memoImage.drawable as? BitmapDrawable)?.bitmap
+        val title = binding!!.title.text.toString()
+        val description = binding!!.description.text.toString()
+        val date = binding!!.textDate.text.toString()
+        val mood = binding!!.moodSpinner.selectedItem.toString()
+        val image: Bitmap? = (binding!!.memoImage.drawable as? BitmapDrawable)?.bitmap
 
         if (title.isNotBlank()) {
             val memoItem = MemoItem(memoId, title, description, date, mood, image)
@@ -267,9 +249,9 @@ class AddMemoFragment : Fragment() {
 
     // SMS 공유 기능을 사용하여 메모 내용을 전송
     private fun shareMemo(phoneNumber: String) {
-        val title = binding.title.text.toString()
-        val description = binding.description.text.toString()
-        val date = binding.textDate.text.toString()
+        val title = binding!!.title.text.toString()
+        val description = binding!!.description.text.toString()
+        val date = binding!!.textDate.text.toString()
 
         val memoText = "📅 날짜: $date\n📌 제목: $title\n📝 내용: $description"
 
@@ -304,5 +286,9 @@ class AddMemoFragment : Fragment() {
         pickGalleryLauncher.launch(intent)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
 
 }
