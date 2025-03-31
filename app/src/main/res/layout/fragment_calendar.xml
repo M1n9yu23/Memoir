@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -19,7 +18,7 @@
             android:theme="@style/Widget.Material3.MaterialCalendar"
             app:mcv_firstDayOfWeek="sunday"
             app:mcv_selectionMode="single"
-            app:mcv_showOtherDates="all" />
+            app:mcv_showOtherDates="none" />
 
 
         <androidx.recyclerview.widget.RecyclerView
