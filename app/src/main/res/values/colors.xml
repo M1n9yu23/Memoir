@@ -8,4 +8,7 @@
     <color name="mood_neutral_stroke">#C1E1C1</color>
     <color name="mood_negative_bg">#FF8A80</color>
     <color name="mood_negative_stroke">#FF9F9F</color>
+    <color name="mood_memo_bg">#FEF8FF</color>
+    <color name="mood_memo_stroke">#C1BCC2</color>
+    <color name="status_color">#A9A1A1</color>
 </resources>
