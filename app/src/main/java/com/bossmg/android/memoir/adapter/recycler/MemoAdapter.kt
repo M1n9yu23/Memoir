@@ -10,7 +10,7 @@ import com.bossmg.android.memoir.databinding.ItemMemoBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-
+private val memoMood = "\uD83D\uDCDD 메모"
 private val positiveMoods =
     setOf("\uD83D\uDE0A 기쁨", "\uD83E\uDD70 행복", "\uD83E\uDD29 설렘", "\uD83D\uDE0E 뿌듯함")
 private val neutralMoods = setOf("\uD83D\uDE10 무난함", "\uD83E\uDD14 생각에 잠김")
@@ -31,6 +31,16 @@ class MemoAdapter(private var memoList: List<MemoItem>) :
         fun onMemoItemClick(memoId: Int)
     }
 
+    init {
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        val sortedList = memoList.sortedBy { memo ->
+            sdf.parse(memo.date)
+        }
+
+        memoList = sortedList
+    }
+
     private inner class MemoViewHolder(val binding: ItemMemoBinding) :
         RecyclerView.ViewHolder(binding.root)
 
@@ -42,14 +52,10 @@ class MemoAdapter(private var memoList: List<MemoItem>) :
     override fun getItemCount(): Int = memoList.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
-        val sortedList = memoList.sortedBy { memo ->
-            sdf.parse(memo.date)
-        }
 
         val binding = (holder as MemoViewHolder).binding
-        val memo = sortedList[position]
+        val memo = memoList[position]
 
         memoItemClickListener = binding.root.context as MemoItemClickListener?
 
@@ -73,7 +79,6 @@ class MemoAdapter(private var memoList: List<MemoItem>) :
                     ContextCompat.getColor(binding.root.context, R.color.mood_positive_stroke)
                 )
             }
-
             in neutralMoods -> {
                 binding.itemCardview.setCardBackgroundColor(
                     ContextCompat.getColor(binding.root.context, R.color.mood_neutral_bg)
@@ -82,7 +87,6 @@ class MemoAdapter(private var memoList: List<MemoItem>) :
                     ContextCompat.getColor(binding.root.context, R.color.mood_neutral_stroke)
                 )
             }
-
             in negativeMoods -> {
                 binding.itemCardview.setCardBackgroundColor(
                     ContextCompat.getColor(binding.root.context, R.color.mood_negative_bg)
@@ -91,11 +95,22 @@ class MemoAdapter(private var memoList: List<MemoItem>) :
                     ContextCompat.getColor(binding.root.context, R.color.mood_negative_stroke)
                 )
             }
+            memoMood -> {
+                binding.itemCardview.setCardBackgroundColor(
+                    ContextCompat.getColor(binding.root.context, R.color.mood_memo_bg)
+                )
+                binding.itemCardview.setStrokeColor(
+                    ContextCompat.getColor(binding.root.context, R.color.mood_memo_stroke)
+                )
+            }
         }
     }
 
     fun updateMemos(newMemoList: List<MemoItem>) {
-        memoList = newMemoList
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        memoList = newMemoList.sortedBy { memo ->
+            sdf.parse(memo.date)
+        }
         notifyDataSetChanged() // 데이터가 변경되었음을 알리고 뷰를 새로 고침
     }
 
