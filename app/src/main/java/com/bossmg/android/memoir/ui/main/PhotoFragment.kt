@@ -12,7 +12,6 @@ import com.bossmg.android.memoir.data.model.MemoItem
 import com.bossmg.android.memoir.databinding.FragmentPhotoBinding
 import com.bossmg.android.memoir.databinding.ItemPhotoBinding
 import com.bossmg.android.memoir.ui.main.MainActivity.Companion.memos
-import com.bossmg.android.memoir.ui.main.MainActivity.Companion.updateMemos
 
 private const val TAG = "PhotoFragment"
 
@@ -20,6 +19,7 @@ class PhotoFragment : Fragment() {
 
     private lateinit var photoAdapter: PhotoAdapter
     private lateinit var filteredMemoList: List<MemoItem>
+    private var binding: FragmentPhotoBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,33 +30,34 @@ class PhotoFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentPhotoBinding.inflate(inflater, container, false)
+        binding = FragmentPhotoBinding.inflate(inflater, container, false)
 
         filteredMemoList = memos.filter { it.image != null }
 
         photoAdapter = PhotoAdapter(filteredMemoList)
 
-        binding.photoRecycler.layoutManager = GridLayoutManager(requireContext(), 4)
-        binding.photoRecycler.adapter = photoAdapter
+        binding!!.photoRecycler.layoutManager = GridLayoutManager(requireContext(), 3)
+        binding!!.photoRecycler.adapter = photoAdapter
 
-        return binding.root
+        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private inner class PhotoViewHolder(val binding: ItemPhotoBinding)
-        : RecyclerView.ViewHolder(binding.root)
+    private inner class PhotoViewHolder(val binding: ItemPhotoBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
-    private inner class PhotoAdapter(private var memoList: List<MemoItem>)
-        : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+    private inner class PhotoAdapter(private var memoList: List<MemoItem>) :
+        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = PhotoViewHolder(
-            ItemPhotoBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+            PhotoViewHolder(
+                ItemPhotoBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false
+                )
             )
-        )
 
         override fun getItemCount(): Int = memoList.size
 
@@ -75,12 +76,19 @@ class PhotoFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         Log.d(TAG, "onStart...")
+
+        photoAdapter.updateMemos(memos)
+
     }
 
     override fun onResume() {
         super.onResume()
-        if(updateMemos != memos) {
-            photoAdapter.updateMemos(updateMemos)
-        }
+        Log.d(TAG, "onResume")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d(TAG, "onDestroyView...")
+        binding = null
     }
 }

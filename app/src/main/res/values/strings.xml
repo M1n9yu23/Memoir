@@ -6,6 +6,7 @@
     <string name="tab4">사진</string>
     <string name="mood">기분</string>
     <string-array name="mood_array">
+        <item>📝 메모</item>
         <item>😊 기쁨</item>
         <item>🥰 행복</item>
         <item>🤩 설렘</item>
