@@ -34,9 +34,10 @@ class MemoAdapter(private var memoList: List<MemoItem>) :
     init {
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
-        val sortedList = memoList.sortedBy { memo ->
-            sdf.parse(memo.date)
-        }
+        val sortedList = memoList.sortedWith( // 날짜가 같은 경우 id로 정렬 결정
+            compareByDescending<MemoItem> { sdf.parse(it.date) }
+                .thenByDescending { it.id }
+        )
 
         memoList = sortedList
     }
@@ -79,6 +80,7 @@ class MemoAdapter(private var memoList: List<MemoItem>) :
                     ContextCompat.getColor(binding.root.context, R.color.mood_positive_stroke)
                 )
             }
+
             in neutralMoods -> {
                 binding.itemCardview.setCardBackgroundColor(
                     ContextCompat.getColor(binding.root.context, R.color.mood_neutral_bg)
@@ -87,6 +89,7 @@ class MemoAdapter(private var memoList: List<MemoItem>) :
                     ContextCompat.getColor(binding.root.context, R.color.mood_neutral_stroke)
                 )
             }
+
             in negativeMoods -> {
                 binding.itemCardview.setCardBackgroundColor(
                     ContextCompat.getColor(binding.root.context, R.color.mood_negative_bg)
@@ -95,6 +98,7 @@ class MemoAdapter(private var memoList: List<MemoItem>) :
                     ContextCompat.getColor(binding.root.context, R.color.mood_negative_stroke)
                 )
             }
+
             memoMood -> {
                 binding.itemCardview.setCardBackgroundColor(
                     ContextCompat.getColor(binding.root.context, R.color.mood_memo_bg)
@@ -108,9 +112,10 @@ class MemoAdapter(private var memoList: List<MemoItem>) :
 
     fun updateMemos(newMemoList: List<MemoItem>) {
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        memoList = newMemoList.sortedBy { memo ->
-            sdf.parse(memo.date)
-        }
+        memoList = newMemoList.sortedWith(
+            compareByDescending<MemoItem> { sdf.parse(it.date) }
+                .thenByDescending { it.id }
+        )
         notifyDataSetChanged() // 데이터가 변경되었음을 알리고 뷰를 새로 고침
     }
 
