@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import com.bossmg.android.memoir.adapter.viewpager.FragmentViewPagerAdapter
 import com.bossmg.android.memoir.adapter.recycler.MemoAdapter
 import com.bossmg.android.memoir.data.model.MemoItem
@@ -46,12 +48,12 @@ class MainActivity : AppCompatActivity(), MemoAdapter.MemoItemClickListener {
         val pagerAdapter = FragmentViewPagerAdapter(this)
         binding.viewpager.adapter = pagerAdapter
         TabLayoutMediator(binding.tabs, binding.viewpager) { tab, position ->
-            tab.text = when (position) {
-                0 -> getString(R.string.tab1)
-                1 -> getString(R.string.tab2)
-                2 -> getString(R.string.tab3)
-                3 -> getString(R.string.tab4)
-                else -> ""
+            tab.icon = when (position) {
+                0 -> AppCompatResources.getDrawable(this, R.drawable.baseline_format_list_bulleted_24)
+                1 -> AppCompatResources.getDrawable(this, R.drawable.baseline_calendar_month_24)
+                2 -> AppCompatResources.getDrawable(this, R.drawable.baseline_emoji_emotions_24)
+                3 -> AppCompatResources.getDrawable(this, R.drawable.baseline_image_24)
+                else -> null
             }
         }.attach()
 

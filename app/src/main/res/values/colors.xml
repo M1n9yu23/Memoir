@@ -11,4 +11,7 @@
     <color name="mood_memo_bg">#FEF8FF</color>
     <color name="mood_memo_stroke">#C1BCC2</color>
     <color name="status_color">#A9A1A1</color>
+    <color name="tab_true">#9671D7</color>
+    <color name="tab_false">#9E9E9E</color>
+    <color name="edit_icon_floating_button">#9671D7</color>
 </resources>

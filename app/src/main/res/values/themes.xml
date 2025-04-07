@@ -7,4 +7,9 @@
     </style>
 
     <style name="Theme.Memoir" parent="Base.Theme.Memoir" />
+
+    <style name="MyTabLayoutStyle" parent="Widget.MaterialComponents.TabLayout">
+        <!-- Material3보다 Components가 탭 클릭하면 아래에 밑줄이 더 길게 나와서 예쁨 -->
+        <item name="tabIconTint">@color/tab_icon_color</item>
+    </style>
 </resources>
