@@ -1,3 +1,7 @@
+# 💡 프로젝트 설명
+
+이 프로젝트는 학습 목적의 프로젝트입니다.
+
 # 📷 Screenshot
 <p float="left">
 <img width="20%" src="https://github.com/user-attachments/assets/3d108156-34fc-4487-bd30-81c760cd9caf">
